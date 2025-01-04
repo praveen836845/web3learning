@@ -1,5 +1,29 @@
+import { useParams } from "react-router-dom";
+import { useReadContract } from "wagmi";
+import { REFERRAL, REFERRAL_ABI } from "../blockchain/constant";
 
 const ProductDetail = () => {
+  const {id} = useParams();
+  const {data : productDetail, refetch : refetchProductDetail} = useReadContract({
+    address: REFERRAL,
+    abi: REFERRAL_ABI,
+    functionName: 'getProduct',
+    args: [id],
+    watch: true,
+  });
+
+  const { data : influencerDetails, refetch : refetchInfluencerDetails} = useReadContract({
+    address: REFERRAL,
+    abi: REFERRAL_ABI,
+    functionName: 'getProductInfluencers',
+    args: [id],
+    watch: true
+  })
+
+  console.log(productDetail);
+  console.log("Influemncers: ", influencerDetails);
+  
+  
   return (
     <div className="p-8 bg-gray-50">
       {/* Back Button */}

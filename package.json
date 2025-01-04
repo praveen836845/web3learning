@@ -10,10 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@rainbow-me/rainbowkit": "^2.2.1",
+    "@reown/walletkit": "^1.1.2",
+    "@tanstack/react-query": "^5.62.14",
+    "@walletconnect/core": "^2.17.3",
+    "@walletconnect/utils": "^2.17.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.3.5",
-    "tailwindcss-animated": "^1.1.2"
+    "react-hot-toast": "^2.5.1",
+    "tailwindcss-animated": "^1.1.2",
+    "viem": "^2.22.2",
+    "wagmi": "^2.14.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

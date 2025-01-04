@@ -16,7 +16,7 @@ const Navigation = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/listing' element={<Listing />} />
-          <Route path='/product-detail' element={<ProductDetail />} />
+          <Route path='/product-detail/:id' element={<ProductDetail />} />
           <Route path='/profile' element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>

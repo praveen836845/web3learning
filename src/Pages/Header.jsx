@@ -1,3 +1,4 @@
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -14,7 +15,8 @@ const Header = () => {
         <Link to="/Login">
           <button className=' h-[40px]   rounded-full'>Login</button>
         </Link>
-          <button className=' h-[50px] w-[180px] backdrop-blur-md bg-white/10 shadow-2xl rounded-full'>Connect Wallet</button>
+          {/* <button className=' h-[50px] w-[180px] backdrop-blur-md bg-white/10 shadow-2xl rounded-full'>Connect Wallet</button> */}
+          <ConnectButton />
         </div>
     </div>
   )
