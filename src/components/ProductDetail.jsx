@@ -1,9 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useReadContract } from "wagmi";
 import { REFERRAL, REFERRAL_ABI } from "../blockchain/constant";
+import { useAccount } from "wagmi";
 
 const ProductDetail = () => {
   const {id} = useParams();
+  const {address} = useAccount();
+  console.log(address);
+  
   const {data : productDetail, refetch : refetchProductDetail} = useReadContract({
     address: REFERRAL,
     abi: REFERRAL_ABI,
@@ -19,6 +23,17 @@ const ProductDetail = () => {
     args: [id],
     watch: true
   })
+
+  const {data: accountDetails, refetch: refetchAccountDetails} = useReadContract({
+    address: REFERRAL,
+    abi: REFERRAL_ABI,
+    functionName: 'getInfluencerStats',
+    args: [address],
+    watch: true,
+  });
+
+  console.log("ACC Detya", accountDetails);
+  
 
   console.log(productDetail);
   console.log("Influemncers: ", influencerDetails);
