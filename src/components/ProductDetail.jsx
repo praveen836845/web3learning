@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useReadContract } from "wagmi";
+import { writeContract, waitForTransactionReceipt } from 'wagmi/actions';
+import { config } from '../utils/config'
 import { REFERRAL, REFERRAL_ABI } from "../blockchain/constant";
 import { useAccount } from "wagmi";
+import toast from "react-hot-toast";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -40,8 +43,51 @@ const ProductDetail = () => {
   console.log("Product Detail:", productDetail);
   console.log("Influencers:", influencerDetails);
 
-  let uniqueCodefound = true;
-  let uniqueCode = "asdfghj";
+  const generateCode = async () => {
+    try {
+      await toast.promise((async () => {
+        const hash = await writeContract(config, {
+          address: REFERRAL,
+          abi: REFERRAL_ABI,
+          functionName: 'generateProductReferralCode',
+          args: [id],
+        });
+        await waitForTransactionReceipt(config, { hash, pollingInterval: 1000, confirmations: 2 });
+        await refetchProductDetail();
+        console.log('Generated Code:', hash);
+      })(), {
+        loading: "Generating Code...",
+        success: "Generated code successfully!",
+        error: "Generating code error:",
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const vote = async (referralCode) => {
+    try {
+      await toast.promise((async () => {
+        const hash = await writeContract(config, {
+          address: REFERRAL,
+          abi: REFERRAL_ABI,
+          functionName: 'voteWithReferral',
+          args: [id, referralCode],
+        });
+        await waitForTransactionReceipt(config, { hash, pollingInterval: 1000, confirmations: 2 });
+        console.log('Voting: ', hash);
+      })(), {
+        loading: "Voting...",
+        success: "Vote successfully!",
+        error: "Vote error:",
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  let uniqueCodefound = false;
+  let uniqueCode = "";
 
   if (accountDetails) {
     const registerArray = accountDetails[4];
@@ -130,7 +176,7 @@ const ProductDetail = () => {
             </div>
           ) : (
             <div className="flex items-center mt-6 space-x-4">
-              <button className="px-6 py-2 text-white bg-blue-600 rounded hover:bg-brown-500">
+              <button className="px-6 py-2 text-white bg-blue-600 rounded hover:bg-brown-500" onClick={generateCode}>
                 Generate Referral Code
               </button>
             </div>
