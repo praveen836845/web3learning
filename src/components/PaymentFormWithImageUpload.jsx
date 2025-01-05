@@ -8,11 +8,16 @@ import { config } from '../utils/config';
 import toast from 'react-hot-toast';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 
+
 const ProductForm = ({ setAddSection }) => {
   const { address } = useAccount();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [images, setImages] = useState([]);
   const [showDropzone, setShowDropzone] = useState(true);
+  const PINATA_API_KEY = import.meta.env.VITE_PINATA_API_KEY;
+  const PINATA_SECRET_API_KEY = import.meta.env.VITE_PINATA_SECRET_API_KEY;
+  const PINATA_JWT = import.meta.env.VITE_PINATA_JWT;
+  
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -63,7 +68,25 @@ const ProductForm = ({ setAddSection }) => {
   };
 
   const uploadToIPFS = async (file) => {
-    return `ipfs://${file.name}`;
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${PINATA_JWT}`,
+        },
+        body: formData,
+      });
+      const result = await res.json();
+      const GATEWAY = "gateway.pinata.cloud";
+      const url = `https://${GATEWAY}/ipfs/${result.IpfsHash}`;
+      console.log("IPFS upload successful:", url);
+      return url;
+    } catch (error) {
+      console.error("IPFS upload failed:", error);
+      toast.error("Failed to upload file to IPFS");
+    }
   };
 
   const handleSubmit = async (e) => {
