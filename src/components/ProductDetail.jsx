@@ -37,7 +37,8 @@ const ProductDetail = () => {
       watch: true,
     });
 
-  console.log(productDetail);
+  console.log("productDetails" ,productDetail);
+
 
 
   const generateCode = async () => {

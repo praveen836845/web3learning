@@ -250,7 +250,7 @@ const ProductForm = ({ setAddSection }) => {
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-2 gap-4"
         >
-          <div>
+        {/* {  <div>
             <label className="block text-sm font-medium text-gray-700">Price (ETH)</label>
             <input
               type="number"
@@ -272,7 +272,7 @@ const ProductForm = ({ setAddSection }) => {
               onChange={handleInputChange}
               className="block w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-blue-500 focus:border-blue-500 transition-shadow"
             />
-          </div>
+          </div>} */}
         </motion.div>
 
         <motion.div

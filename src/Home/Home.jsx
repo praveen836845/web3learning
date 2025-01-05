@@ -93,7 +93,7 @@ const Home = () => {
     </div>
   ) : (
     <div className="flex">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 mt-[61px]">
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[100px]">
           {products.length > 0 ? (
