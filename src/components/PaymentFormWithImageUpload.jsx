@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-const ProductForm = () => {
+const ProductForm = ({setAddSection}) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [formData, setFormData] = useState({
     productName: "",
@@ -134,6 +134,13 @@ const ProductForm = () => {
           className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-gray-800"
         >
           Upload Product
+        </button>
+        <button
+         onClick={()=>setAddSection(false)}
+
+          className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-gray-800"
+        >
+          close
         </button>
       </form>
     </div>
