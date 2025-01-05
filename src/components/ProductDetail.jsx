@@ -10,8 +10,6 @@ const ProductDetail = () => {
   const { id } = useParams();
   const { address } = useAccount();
 
-  console.log(address);
-
   const { data: productDetail, refetch: refetchProductDetail } =
     useReadContract({
       address: REFERRAL,
@@ -39,9 +37,8 @@ const ProductDetail = () => {
       watch: true,
     });
 
-  console.log("Account Details:", accountDetails);
-  console.log("Product Detail:", productDetail);
-  console.log("Influencers:", influencerDetails);
+  console.log(productDetail);
+
 
   const generateCode = async () => {
     try {
@@ -97,14 +94,10 @@ const ProductDetail = () => {
         uniqueCodefound = true;
         const { uniqueCode: code } = influencerDetails?.[0] || {};
         uniqueCode = code;
-        console.log("Found unique code:", uniqueCode);
-      } else {
-        console.log("Not Found");
       }
-    } else {
-      console.log("registerArray is not an array");
     }
   }
+
   const copyToClipboard = () => {
     const textToCopy = `${uniqueCode} - ${id}`;
     navigator.clipboard
@@ -116,6 +109,15 @@ const ProductDetail = () => {
         console.error("Failed to copy text: ", err);
       });
   };
+
+  // Loading state
+  if (!productDetail || !influencerDetails) {
+    return (
+      <div className="p-8 bg-gray-50">
+        <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 bg-gray-50">
@@ -130,7 +132,7 @@ const ProductDetail = () => {
           <div className="w-full h-80">
             <img
               className="object-cover w-full h-full rounded-lg"
-              src="https://gratisography.com/wp-content/uploads/2024/11/gratisography-clown-room-1170x780.jpg"
+              src=  {productDetail[0].images[0].imageUrl}
               alt="Entertainment Center"
             />
           </div>
@@ -139,52 +141,102 @@ const ProductDetail = () => {
         {/* Right Section: Product Details */}
         <div>
           <h1 className="text-3xl font-bold text-gray-800">
-            Entertainment Center
+            {productDetail[0]?.name || 'Product Name Not Available'}
           </h1>
-          <div className="flex items-center mt-2 space-x-2">
-            <span className="text-yellow-500">★★★★☆</span>
-            <p className="text-sm text-gray-600">100 customer reviews</p>
-          </div>
-          <p className="mt-4 text-2xl font-semibold text-red-500">
-            <span className="text-gray-600"> Price Money :-</span> 599.99
-          </p>
+          <p className="mt-4 text-2xl font-semibold text-red-500"></p>
           <p className="mt-4 text-gray-600">
-            Cloud bread VHS hell of banjo bicycle rights jianbing umami
-            mumblecore etsy 8-bit pok pok +1 wolf. Vexillologist yr dreamcatcher
-            waistcoat, authentic chillwave trust fund.
+            {productDetail[0]?.description || 'Description Not Available'}
           </p>
           <div className="mt-6 space-y-4">
             <p>
-              <span className="font-bold">Available:</span> In Stock
+              <span className="font-bold">Category:</span>{' '}
+              {productDetail[0]?.specifications || 'Not Available'}
             </p>
             <p>
-              <span className="font-bold">SKU:</span> RecNZ0koOqEmilmoz
-            </p>
-            <p>
-              <span className="font-bold">Brand:</span> Caressa
-            </p>
+        <span className="font-bold">Tags:</span>{' '}
+        {productDetail[0]?.tags && productDetail[0]?.tags.length > 0 ? (
+          <div className="flex flex-wrap gap-3 mt-2">
+            {productDetail[0].tags.map((tag, index) => (
+              <span
+                key={index}
+                className={`px-4 py-2 bg-gray-200 text-gray-700 rounded-full shadow-md 
+                hover:scale-105 transform transition-all ease-in-out 
+                animate-fadeIn`}
+                style={{
+                  animationDelay: `${index * 0.2}s`, // Staggered animation effect for each tag
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : (
+          'Not Available'
+        )}
+      </p>
           </div>
 
           {uniqueCodefound ? (
             <div>
               <p
                 className="text-blue-500 mt-2 cursor-pointer hover:bg-blue-100 hover:text-blue-700 px-2 py-1 rounded-md transition-all duration-200"
-                onClick={copyToClipboard} // Trigger copy on click
+                onClick={copyToClipboard}
               >
                 {uniqueCode} - {id}
               </p>
             </div>
           ) : (
             <div className="flex items-center mt-6 space-x-4">
-              <button className="px-6 py-2 text-white bg-blue-600 rounded hover:bg-brown-500" onClick={generateCode}>
+              <button 
+                className="px-6 py-2 text-white bg-blue-600 rounded hover:bg-brown-500" 
+                onClick={generateCode}
+              >
                 Generate Referral Code
               </button>
             </div>
           )}
         </div>
       </div>
+
+      {/* New Section: Influencers List */}
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Influencers List</h2>
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Influencer Address
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Unique Code
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Referral Votes
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {influencerDetails && influencerDetails.map((influencer, index) => (
+                <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {influencer.influencerAddress}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">
+                    {influencer.uniqueCode}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {influencer.referralVotes.toString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
+  
 };
 
 export default ProductDetail;

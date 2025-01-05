@@ -23,11 +23,10 @@ const Home = () => {
 
   useEffect(() => {
     if (productDetails) {
-      setProducts(productDetails);
+      setProducts(productDetails[0]);
     }
   }, [productDetails]);
 
-  console.log(">> Destructure", productDetails);
 
   const registerUser = async () => {
     console.log("Registering User");
@@ -95,13 +94,11 @@ const Home = () => {
   ) : (
     <div className="flex">
       <div className="container mx-auto px-4">
-        <h1 className="text-2xl font-bold mb-4">Home</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[100px]">
           {products.length > 0 ? (
             products.map((product, index) => {
-             
-              
+              console.log(">>>>>product" , product);
               return (
                 <ProductCard
                   key={index}
@@ -121,7 +118,7 @@ const Home = () => {
           )}
         </div>
 
-        <div className="my-6">
+        <div className="my-10">
           <button
             onClick={registerUser}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

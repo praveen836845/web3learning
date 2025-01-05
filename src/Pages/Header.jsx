@@ -1,25 +1,19 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-// import React from 'react'
-// import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
-    <div className=' flex justify-around shadow items-center   bg-black text-white h-[80px] '>
-        <h2 className=' text-2xl font-bold'><b>Web3 Learing</b></h2>
-        {/* <ul className=' hidden  md:flex gap-10'>
-          <Link to="/">Home</Link>
-          <Link to="/Listing">Listing</Link>
-          
-        </ul> */}
-        <div className=' flex gap-10'> 
-        {/* <Link to="/Login">
-          <button className=' h-[40px]   rounded-full'>Login</button>
-        </Link> */}
-          {/* <button className=' h-[50px] w-[180px] backdrop-blur-md bg-white/10 shadow-2xl rounded-full'>Connect Wallet</button> */}
-          <ConnectButton />
-        </div>
+    <div className='flex justify-around items-center bg-black text-white h-[80px] shadow animate-bgColorChange'>
+      {/* Slide-in animation for the header text */}
+      <h2 className='text-2xl font-bold transition-transform duration-500 ease-out hover:scale-105 animate-slideIn'>
+        <b>Referral Races</b>
+      </h2>
+
+      <div className='flex gap-10'>
+        {/* Animated ConnectButton with hover effects */}
+        <ConnectButton className="transition-all duration-300 ease-in-out transform hover:scale-110 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white hover:shadow-xl" />
+      </div>
     </div>
   )
 }
 
-export default Header
+export default Header;
